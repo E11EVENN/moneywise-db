@@ -4,6 +4,8 @@
 
 <Workspace>
 	<Local Expanded="Yes">
+		<Model Expanded="Yes" ID="{2AD88C01-BB05-4304-8E11-6836A25321FA}" Loaded="No" Name="moneywise-mer" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="moneywise-mer.pdm"/>
+		<Model Expanded="Yes" ID="{66412B60-0347-48B8-9F6A-5FFFEB5B8568}" Loaded="No" Name="AndresTablas_proyecto" Type="{FF4B6538-9856-42CF-B9B9-304ED370CEAA}" URL="file:///C|/Users/andre/Documents/AndresTablas_proyecto/AndresTablas_proyecto.prj"/>
 		<Model Expanded="Yes" ID="{2AD88C01-BB05-4304-8E11-6836A25321FA}" Name="moneywise-mer" Selected="Yes" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="moneywise-mer.pdm"/>
 	</Local>
 	<BrowserModule Name="Repository"/>
