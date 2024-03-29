@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     14/03/2024 9:20:26 p. m.                     */
+/* Created on:     20/03/2024 8:25:12 p. m.                     */
 /*==============================================================*/
 
 
@@ -78,6 +78,11 @@ drop table USUARIO_ROLES;
 create table CIUDAD (
    ID_CIUDAD            NUMERIC(10)          not null,
    ID_DEPARTAMENTO      NUMERIC(10)          null,
+   NOMBRE               CHAR(10)             null,
+   INDICATIVO           VARCHAR(10)          null,
+   FECHA_REGISTRO       DATE                 null,
+   FECHA_ACTULIZACION   DATE                 null,
+   ESTADO               BOOL                 null,
    constraint PK_CIUDAD primary key (ID_CIUDAD)
 );
 
@@ -89,6 +94,7 @@ create table CLIENTE (
    ID_CIUDAD            NUMERIC(10)          null,
    ID_CLIENTE_EMAIL     NUMERIC(10)          null,
    ID_DIRECCION         NUMERIC(10)          null,
+   ID_TIPO_TELEFONO     NUMERIC(10)          null,
    NOMBRE               VARCHAR(20)          not null,
    APELLIDO             VARCHAR(30)          null,
    DOCUMENTO            VARCHAR(10)          null,
@@ -122,8 +128,6 @@ create table CLIENTE_EMAIL (
 /*==============================================================*/
 create table CLIENTE_TELEFONOS (
    ID_CLIENTE_TELEFONO  NUMERIC(10)          not null,
-   ID_CLIENTE           NUMERIC(10)          null,
-   ID_TIPO_TELEFONO     NUMERIC(10)          null,
    TELEFONO             VARCHAR(10)          null,
    constraint PK_CLIENTE_TELEFONOS primary key (ID_CLIENTE_TELEFONO)
 );
@@ -220,6 +224,11 @@ create table CREDITO_REPORTE_MORAS (
 create table DEPARTAMENTO (
    ID_DEPARTAMENTO      NUMERIC(10)          not null,
    ID_PAIS              NUMERIC(10)          null,
+   NOMBRE               VARCHAR(10)          null,
+   INDICATIVO           VARCHAR(3)           null,
+   FECHA_REGISTRO       DATE                 null,
+   FECHA_ACTUALIZACION  DATE                 null,
+   ESTADO               BOOL                 null,
    constraint PK_DEPARTAMENTO primary key (ID_DEPARTAMENTO)
 );
 
@@ -286,6 +295,11 @@ create table ORGANIZACION_USUARIOS (
 /*==============================================================*/
 create table PAIS (
    ID_PAIS              NUMERIC(10)          not null,
+   NOMBRE               VARCHAR(10)          null,
+   INDICATIVO_TELEFONICO VARCHAR(10)          null,
+   ESTADO               VARCHAR(10)          null,
+   FECHA_RESGISTRO      DATE                 null,
+   FECHA_ACTUALIZACION  DATE                 null,
    constraint PK_PAIS primary key (ID_PAIS)
 );
 
@@ -365,6 +379,7 @@ create table TIPO_MOVIMIENTO (
 /*==============================================================*/
 create table TIPO_TELEFONO (
    ID_TIPO_TELEFONO     NUMERIC(10)          not null,
+   ID_CLIENTE_TELEFONO  NUMERIC(10)          null,
    DESCRIPCION          VARCHAR(100)         null,
    constraint PK_TIPO_TELEFONO primary key (ID_TIPO_TELEFONO)
 );
@@ -384,7 +399,6 @@ create table TIPO_USUARIO (
 create table USUARIO (
    ID_USUARIO           NUMERIC(10)          not null,
    ID_CIUDAD            NUMERIC(10)          null,
-   ID_DEPARTAMENTO      NUMERIC(10)          null,
    ID_TIPO_USUARIO      NUMERIC(10)          null,
    ID_CLIENTE_EMAIL     NUMERIC(10)          null,
    NOMBRE_USUARIO       VARCHAR(20)          not null,
@@ -433,6 +447,11 @@ alter table CLIENTE
       references DIRECCION (ID_DIRECCION)
       on delete restrict on update restrict;
 
+alter table CLIENTE
+   add constraint FK_CLIENTE_REFERENCE_TIPO_TEL foreign key (ID_TIPO_TELEFONO)
+      references TIPO_TELEFONO (ID_TIPO_TELEFONO)
+      on delete restrict on update restrict;
+
 alter table CLIENTE_DIRECCIONES
    add constraint FK_CLIENTE__REFERENCE_CLIENTE foreign key (ID_CLIENTE)
       references CLIENTE (ID_CLIENTE)
@@ -451,16 +470,6 @@ alter table CLIENTE_DIRECCIONES
 alter table CLIENTE_EMAIL
    add constraint FK_CLIENTE__REFERENCE_TIPO_EMA foreign key (ID_TIPO_EMAIL)
       references TIPO_EMAIL (ID_TIPO_EMAIL)
-      on delete restrict on update restrict;
-
-alter table CLIENTE_TELEFONOS
-   add constraint FK_CLIENTE__REFERENCE_CLIENTE foreign key (ID_CLIENTE)
-      references CLIENTE (ID_CLIENTE)
-      on delete restrict on update restrict;
-
-alter table CLIENTE_TELEFONOS
-   add constraint FK_CLIENTE__REFERENCE_TIPO_TEL foreign key (ID_TIPO_TELEFONO)
-      references TIPO_TELEFONO (ID_TIPO_TELEFONO)
       on delete restrict on update restrict;
 
 alter table CREDITO
@@ -573,14 +582,14 @@ alter table TIPO_CLIENTE
       references CLIENTE (ID_CLIENTE)
       on delete restrict on update restrict;
 
-alter table USUARIO
-   add constraint FK_USUARIO_REFERENCE_CIUDAD foreign key (ID_CIUDAD)
-      references CIUDAD (ID_CIUDAD)
+alter table TIPO_TELEFONO
+   add constraint FK_TIPO_TEL_REFERENCE_CLIENTE_ foreign key (ID_CLIENTE_TELEFONO)
+      references CLIENTE_TELEFONOS (ID_CLIENTE_TELEFONO)
       on delete restrict on update restrict;
 
 alter table USUARIO
-   add constraint FK_USUARIO_REFERENCE_DEPARTAM foreign key (ID_DEPARTAMENTO)
-      references DEPARTAMENTO (ID_DEPARTAMENTO)
+   add constraint FK_USUARIO_REFERENCE_CIUDAD foreign key (ID_CIUDAD)
+      references CIUDAD (ID_CIUDAD)
       on delete restrict on update restrict;
 
 alter table USUARIO
